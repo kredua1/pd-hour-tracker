@@ -1,0 +1,35 @@
+﻿@model PDHourTracker.Web.Models.ProviderCodes.ProviderCodeViewModel
+
+<form asp-controller="ProviderCodes" asp-action="@ViewData["Action"]" method="post" role="form">
+    <div asp-validation-summary="All"></div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="Code">Provider Code</label>
+                <input type="text" asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="StartDate">Start Date</label>
+                <input type="date" asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="EndDate">End Date</label>
+                <input type="date" asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-sm btn-primary" value="Save" />
+    </div>
+</form>

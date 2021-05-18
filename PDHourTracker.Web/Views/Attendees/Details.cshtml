@@ -1,0 +1,85 @@
+﻿@model PDHourTracker.Web.Models.Attendees.AttendeeDetailsModel
+
+@{ 
+    ViewData["Title"] = "Attendee Details";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            <a asp-controller="Attendees" asp-action="Update" asp-route-id="@Model.Id"
+                asp-route-ra="Details">
+                <span class="oi oi-pencil"></span>
+                Edit
+            </a>
+        </p>
+        <div class="card mb-3">
+            <div class="card-header card-header-short bg-primary text-light">
+                <p class="text-big">@Model.FullName</p>
+            </div>
+            <div class="card-body card-body-short">
+                <p>
+                    <span class="lead">@Model.AgencyName</span><br />
+                    @Model.JobTitle
+                </p>
+                <p>
+                    <b>ID: </b>@Model.CertId
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h2>Workshops</h2>
+        @if (Model.WorkshopHours.Any())
+        {
+            <p>
+                <a asp-controller="Attendees" asp-action="WorkshopHoursExcel" asp-route-id="@Model.Id">
+                    Download Hours in Excel
+                </a>
+            </p>
+        <table class="table table-sm table-striped">
+            <caption class="text-center">Workshops attended with PD Hours</caption>
+            <thead>
+                <tr class="table-warning">
+                    <th>Workshop</th>
+                    <th>Date</th>
+                    <th>PD Hours</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var workshopHour in Model.WorkshopHours)
+                {
+                    <tr>
+                        <td>@workshopHour.WorkshopName</td>
+                        <td>@workshopHour.TrainingDate.ToShortDateString()</td>
+                        <td>@workshopHour.PDHours</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+            
+        }
+        else
+        {
+            <p>Attendee hasn't been assigned to any workshops yet.</p>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p class="mt-lg-5">
+            <a asp-controller="Attendees" asp-action="Index"
+                asp-route-p="@ViewData["PageNumber"]" asp-route-ps="@ViewData["PageSize"]"
+                asp-route-sv="@ViewData["SearchValue"]">
+                Back to Attendees
+            </a>
+        </p>
+    </div>
+</div>

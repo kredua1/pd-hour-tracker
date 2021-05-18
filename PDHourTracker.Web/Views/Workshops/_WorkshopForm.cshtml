@@ -1,0 +1,103 @@
+﻿@model PDHourTracker.Web.Models.Workshops.WorkshopEditModel
+
+<form asp-controller="Workshops" asp-action="@ViewData["Action"]" method="post" role="form">
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <input type="hidden" id="Id" /> @* WorkshopId used for updates *@
+    <input type="hidden" id="providerCode" /> @* Provider code used for display *@
+
+    @* Save paging info *@
+    <input type="hidden" asp-for="PageNum" />
+    <input type="hidden" asp-for="PageSize" />
+
+    <div class="form-group">
+        <label asp-for="WorkshopName">Workshop Name</label>
+        <input type="text" asp-for="WorkshopName" class="form-control" />
+        <span asp-validation-for="WorkshopName"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description">Description</label>
+        <textarea asp-for="Description" rows="3" cols="60" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProjectId">Project</label>
+        @*<select asp-for="ProjectId" class="form-control"
+        asp-items="@{new SelectList(Model.Projects, "Id", "ProjectName")}">*@
+        <select asp-for="ProjectId" class="form-control"
+                asp-items='new SelectList(Model.Projects, "Id", "ProjectName")'>
+            <option value="">(Select Project)</option>
+        </select>
+        <span asp-validation-for="ProjectId"></span>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="EmployeeId">Contact</label>
+                @*<select asp-for="EmployeeId" class="form-control"
+        asp-items="@{ new SelectList(Model.Employees, "Id", "FullName")}">*@
+                <select asp-for="EmployeeId" class="form-control"
+                        asp-items='new SelectList(Model.Employees, "Id", "FullName")'>
+                    <option value="">(Select Contact)</option>
+                </select>
+                <span asp-validation-for="EmployeeId"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="TrainingDate">Date</label>
+                <input type="date" class="form-control" asp-for="TrainingDate" />
+                <span asp-validation-for="TrainingDate"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="PDHours">Professional Development Hours</label>
+                <input type="number" class="form-control" asp-for="PDHours" />
+                <span asp-validation-for="PDHours"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-4">
+                <label asp-for="ProviderCodeId">Provider Code</label>
+                <select asp-for="ProviderCodeId" asp-items="Model.ProviderCodes" class="form-control"></select>
+                <span asp-validation-for="ProviderCodeId"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <p>
+                Enter a session identifier, such as your project acronym and the date.<br />
+                The ADE provider code will be appended to it.
+            </p>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="SessionIdentifier">Session Identifier</label>
+                <input type="text" class="form-control" asp-for="SessionIdentifier" maxlength="30" />
+                <span asp-validation-for="SessionIdentifier"></span>
+            </div>
+            <div class="col-md-3">
+                <p>
+                    Full Session Identifier<br />
+                    <span id="sessionIdentifierDisplay"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Comments">Comments</label>
+        <textarea asp-for="Comments" rows="3" cols="60" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-sm btn-primary" value="Save" />
+    </div>
+</form>

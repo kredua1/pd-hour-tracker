@@ -1,0 +1,149 @@
+image: jefferyb/openshift-cli
+
+stages:
+  - dev
+  - production
+
+####### BEGIN - EDIT BELOW WITH YOUR OWN VARIABLES
+
+variables:
+  ### OPENSHIFT Cluster Level Variables
+  # To get the OpenShift token, you can run:
+  # $ oc whoami -t
+  # or use the "Copy Login Command" from the OpenShift Web Console (You can find it by clicking on your username once you login), paste it somewhere (it should look something like: oc login https://console.origin.uark.edu:8443 --token=oEtk3hfRe6FJ2WRr8_79ykjyhmzdYKaDsZh1dPMC54I) and just get the token (in this case: oEtk3hfRe6FJ2WRr8_79ykjyhmzdYKaDsZh1dPMC54I)
+  # RECOMMENDED: Add your variables (DEV_OPENSHIFT_TOKEN, PROD_OPENSHIFT_TOKEN) to "Settings (on left nav at bottom) -> CI/CD -> Variables" OR UnComment the 2 lines below
+  # DEV_OPENSHIFT_TOKEN: oESk3hfRe6Fj2WRr8_79yyjyhmzdYKaDnZh1dPMCA4I
+  # PROD_OPENSHIFT_TOKEN: oEtk3hfRe6FJ2WRr8_79ykjyhmzdYKaDsZh1dPMC54I
+
+  ### PROJECT Level Variables
+  # Name of your Project (For this, use all lowercase. Dashes (-) are allowed)
+  OPENSHIFT_PROJECT_NAME: rcec-partnerspdtracker
+  OPENSHIFT_PROJECT_DISPLAY_NAME: Partners Professional Development Hour Tracker
+  OPENSHIFT_PROJECT_DESCRIPTION: Provides a way to track professional development hours for attendees of workshops. kred - kred@uark.edu
+
+  ### GITLAB Level Variables
+  # In your Git repo, go to 'settings (on left nav at bottom)' -> 'repository' -> 'Deploy Tokens' -> Under 'Name: openshift' and check the boxes 'read_repository' & 'read_registry' under 'Scopes' and then click the green button 'Create deploy token' to get your New Deploy Token to use.
+  # RECOMMENDED: Add your variables (GITLAB_AUTH_USERNAME, GITLAB_AUTH_PASSWORD) to "Settings (on left nav at bottom) -> CI/CD -> Variables" OR UnComment the 2 lines below
+  # GITLAB_AUTH_USERNAME: gitlab+deploy-token-33
+  # GITLAB_AUTH_PASSWORD: Dk7JMRHCG3kPTFERSUMz
+
+  ### APPLICATION Level Variables
+  # Name of your app, something like 'python-example' (For this, use all lowercase. Dashes (-) are allowed)
+  APPLICATION_NAME: partnerspdtracker
+  # if you want your url to something like, 'python-example.origin.uark.edu', then set 'APPLICATION_URL' to 'python-example'
+  APPLICATION_URL: partnerspdtracker
+  # Git url. to your project, like https://git.uark.edu/jefferyb/demo.git
+  # PS: make sure you have the '.git' at the end
+  APPLICATION_GIT_URL: https://git.uark.edu/kred/pd-hour-tracker.git
+  # Application base image used to build and run your application. The common base images are:
+  # Python/Django projects: centos/python-36-centos7
+  # PHP/Laravel projects: centos/php-72-centos7
+  # NodeJS projects: openshift/nodejs
+  # Apache projects: centos/httpd-24-centos7
+  # Perl projects: centos/perl-526-centos7
+  # Ruby projects: centos/ruby-25-centos7
+  # dotnet project: dotnet:2.2   # ref: https://developers.redhat.com/blog/2018/07/05/deploy-dotnet-core-apps-openshift/, https://docs.openshift.com/container-platform/3.9/using_images/s2i_images/dot_net_core.html
+  # And you can visit https://hub.docker.com/r/${APPLICATION_BASE_IMAGE}/ for more settings/environment variables that you can use.
+  APPLICATION_BASE_IMAGE: dotnet:2.2
+  # The next 2 are for labels: Username of the project-admin and the deparment abbreviation for the department.
+  APPLICATION_PROJECT_ADMIN: kred
+  APPLICATION_PROJECT_DEPARTMENT: RCEC
+  SECRET_NAME: partnerspdtracker-secrets
+  APPLICATION_CPU_LIMITS: 700m
+  APPLICATION_MEMORY_LIMITS: 512Mi
+
+
+####### END - EDIT ABOVE WITH YOUR OWN VARIABLES
+####### DON'T EDIT BELOW UNLESS YOU KNOW WHAT YOU ARE DOING ;)
+
+.deploy: &deploy
+  before_script:
+    # Login
+    - oc login "$OPENSHIFT_SERVER" --token="$OPENSHIFT_TOKEN" --insecure-skip-tls-verify > /dev/null
+    # Create project
+    - oc project "${OPENSHIFT_PROJECT_NAME}" 2> /dev/null || oc new-project ${OPENSHIFT_PROJECT_NAME} --display-name="${OPENSHIFT_PROJECT_DISPLAY_NAME}" --description="${OPENSHIFT_PROJECT_DESCRIPTION}"
+  script:
+    # Create gitlab-auth
+    - oc get secret gitlab-auth || oc create secret generic gitlab-auth --type=kubernetes.io/basic-auth --from-literal=username="${GITLAB_AUTH_USERNAME}" --from-literal=password="${GITLAB_AUTH_PASSWORD}"
+    ### ADD YOUR SECRET
+    # Add your variables (SECRET_NAME, USERNAME, PASSWORD, API_KEY) to "Settings (on left nav at bottom) -> CI/CD -> Variables"
+    # update/add/remove --from-literal= according to your variables
+    # - oc get secret ${SECRET_NAME} || oc create secret generic ${SECRET_NAME} --from-literal=username=${USERNAME} --from-literal=password=${PASSWORD} --from-literal=key=${API_KEY}
+    - oc get secret ${SECRET_NAME} || oc create secret generic ${SECRET_NAME} --from-literal=PDHourTrackerConnection="${PDHourTrackerConnection}" --from-literal=Auth_Google_Id="${Auth_Google_Id}" --from-literal=Auth_Google_Secret="${Auth_Google_Secret}" --from-literal=Auth_Microsoft_Id="${Auth_Microsoft_Id}" --from-literal=Auth_Microsoft_Secret="${Auth_Microsoft_Secret}" --from-literal=Auth_Twitter_Id="${Auth_Twitter_Id}" --from-literal=Auth_Twitter_Secret="${Auth_Twitter_Secret}"
+    # Create application
+    - oc get services ${APPLICATION_NAME} 2> /dev/null || oc new-app ${APPLICATION_BASE_IMAGE}~${APPLICATION_GIT_URL} --source-secret=gitlab-auth --name ${APPLICATION_NAME} --labels="project-admin=${APPLICATION_PROJECT_ADMIN},department=${APPLICATION_PROJECT_DEPARTMENT}" --build-env DOTNET_STARTUP_PROJECT=PDHourTracker.Web
+    - oc set probe dc/${APPLICATION_NAME} --readiness --get-url=http://:8080/health/ready --initial-delay-seconds=60 --period-seconds=60 --timeout-seconds=5
+    - oc set probe dc/${APPLICATION_NAME} --liveness --get-url=http://:8080/health/live --initial-delay-seconds=60 --period-seconds=60 --timeout-seconds=5
+    #- oc patch buildconfig ${APPLICATION_NAME} -p '{"spec":{"source":{"git":{"ref":"${GIT_BRANCH}"}}}}'
+    ### Import environment from a secret
+    # - oc set env dc/${APPLICATION_NAME} --from=secret/${SECRET_NAME}
+    - oc set env dc/${APPLICATION_NAME} --from=secret/${SECRET_NAME}
+    ### Set limits 
+    - if [[ $(oc get dc ${APPLICATION_NAME} -o jsonpath='{ .spec.template.spec.containers[*].resources.limits.memory }') == '' ]]; then oc set resources dc/${APPLICATION_NAME} --limits=cpu=${APPLICATION_CPU_LIMITS},memory=${APPLICATION_MEMORY_LIMITS}; fi
+    # Create route/url
+    - oc get route ${APPLICATION_NAME} || oc create route edge ${APPLICATION_NAME} --insecure-policy=Redirect --service=${APPLICATION_NAME} --hostname=${APPLICATION_URL}.${OPENSHIFT_DOMAIN}
+    - oc get route ${APPLICATION_NAME}-uark || oc create route edge ${APPLICATION_NAME}-uark --insecure-policy=Redirect --service=${APPLICATION_NAME} --hostname=partnerspdtracker.uark.edu
+    # Start build/Update application
+    #- oc start-build ${APPLICATION_NAME} --follow
+    # Watch the status of the latest rollout
+    #- oc rollout status --watch DeploymentConfig ${APPLICATION_NAME}
+
+
+### Deploy to the dev environment
+##################################
+deploy-to-dev:
+  <<: *deploy
+  after_script:
+    # Set which git branch to use
+    - oc patch buildconfig ${APPLICATION_NAME} -p '{"spec":{"source":{"git":{"ref":"master"}}}}'
+    # Start build/Update application
+    - oc start-build ${APPLICATION_NAME} --follow
+    # Watch the status of the latest rollout
+    - oc rollout status --watch DeploymentConfig ${APPLICATION_NAME}
+  stage: dev
+  variables:
+    OPENSHIFT_SERVER: https://console.origin.uark.edu:8443
+    OPENSHIFT_DOMAIN: origin.uark.edu
+    OPENSHIFT_TOKEN: ${DEV_OPENSHIFT_TOKEN}
+    #GIT_BRANCH: master
+  environment:
+    name: origin
+    url: https://${APPLICATION_URL}.${OPENSHIFT_DOMAIN}
+  ### UnComment out below to specify which branch to deploy from, anytime you commit.
+  # only:
+  #   - dev-branch
+  #   - test-branch
+  # except:
+  #   - master
+  ### UnComment below if you want to deploy manually
+  # when: manual    
+
+
+### Deploy to the production environment
+########################################
+# Only deploy from the master git branch.
+# When ready to deploy to production, commit your "test" branch to the master branch, 
+#   which will then get picked up and deployed to production.
+deploy-to-production:
+  <<: *deploy
+  after_script:
+    # Set which git branch to use
+    - oc patch buildconfig ${APPLICATION_NAME} -p '{"spec":{"source":{"git":{"ref":"production-code"}}}}'
+    # Start build/Update application
+    - oc start-build ${APPLICATION_NAME} --follow
+    # Watch the status of the latest rollout
+    - oc rollout status --watch DeploymentConfig ${APPLICATION_NAME}
+  stage: production
+  variables:
+    OPENSHIFT_SERVER: https://console.kube.uark.edu:8443
+    OPENSHIFT_DOMAIN: kube.uark.edu
+    OPENSHIFT_TOKEN: ${PROD_OPENSHIFT_TOKEN}
+    #GIT_BRANCH: production-code
+  environment:
+    name: kube
+    url: https://${APPLICATION_URL}.${OPENSHIFT_DOMAIN}
+  # Only deploy from the "production-code" branch
+  only:
+    - production-code
+  ### UnComment below if you want to deploy manually
+  # when: manual

@@ -1,0 +1,171 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  line-height: 60px; /* Vertically center the text there */
+  
+}
+
+/* Skip to Content link 
+-----------------------------------------------------*/
+.skip-to-content:focus { display: block;
+                         border: 2px solid #950b2c; 
+                         background-color: lightyellow; 
+                         color: #950b2c;
+                         width: 100%; 
+                         height: 20px;
+                         position: relative; 
+                         padding: 15px 10px 40px 10px; 
+                         margin-top: 10px;
+                         text-align: center;
+                         text-decoration: underline !important;
+}
+
+/* Link hover and focus 
+-----------------------------------------------------*/
+a:hover, a:focus, .btn:focus, .footer .nav-link:hover, .footer .nav-link:focus,
+.page-link:hover, .page-link:hover{
+    outline: #950b2c solid 2px;
+}
+
+
+/*a:hover, a:focus { border: 1px solid #950b2c;
+                   background-color: lightyellow !important;
+                   color: #950b2c !important;
+                   text-decoration: underline;
+                   padding: 5px;
+}*/
+/*a.btn:hover, a.btn:focus*/
+
+
+/* Brand colors and site name/title at top */
+.brand-color {
+    color: #950b2c !important;
+}
+.bg-brand { background-color: #950b2c; }
+.brand-name { font-size: 2rem;}
+.brand-name a:hover { text-decoration: none; }
+
+.sub-title { font-size: 1.75rem; font-weight: 500; line-height: 1.2; margin-bottom: 0.5rem; }
+
+/* Site area styles: Workshops, Attenees, Agencies */
+.agency-color { color: #218739; }
+.heading-attendee {
+    color: #8e721d;
+    text-align: center;
+}
+.workshop-color { color: #0071eb; }
+
+/* Bootstrap Overrides for Contrast
+------------------------------------------------------*/
+
+/* These background colors usually have white text. */
+.bg-primary { background-color: #0071eb !important; }
+.bg-success { background-color: #218739 !important; }
+a { color: #0056b3; }
+
+.text-primary { color: #0071eb !important; }
+
+.btn-primary { background-color: #0071eb; }
+.btn-primary:hover { background-color: #0056b3; border-color: #0056b3; }
+.btn-warning:hover { color: #424242 !important; }
+.btn-success { background-color: #218739; }
+.btn-success:hover { background-color: #19672b; border-color: #1d7732; }
+
+/* Bootstrap Navbar Overrides
+------------------------------------------------------*/
+.navbar-light .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+.navbar-light .navbar-toggler { color: #fff; border-color: #fff; }
+
+.nav-link:hover, .nav-link:focus {
+    outline: #fff solid 2px;
+    /*color: #16181b !important;
+    text-decoration: none;
+    background-color: #f8f9fa;*/
+}
+
+/* Dropdown menu */
+.dropdown-menu, .dropdown-item { background-color: #950b2c; color: #fff; }
+
+/* Bootstrap Overrides for Headings 
+------------------------------------------------------*/
+h1 { color: #0071eb; }
+
+/* Additional Colors
+------------------------------------------------------*/
+
+.text-on-bg-warning { color: #4f4f4f !important; }
+
+
+/* Text Sizes 
+------------------------------------------------------*/
+.text-big { font-size: 2rem;}
+.card-header, p.text-big { margin-bottom: 0; }
+
+/* Card alternates */
+.card-header-short, .card-body-short { padding-bottom: .25rem; padding-top: .25rem; }
+
+/* Sign In Button Styles
+-----------------------------------------------------*/
+.sign-in-button {
+    padding: 0;
+    border: none;
+    background-color: #fff;
+}
+
+    .sign-in-button > img {
+        cursor: pointer;
+        width: 215px;
+    }

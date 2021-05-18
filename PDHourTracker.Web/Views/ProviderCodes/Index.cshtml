@@ -1,0 +1,43 @@
+﻿@model IEnumerable<PDHourTracker.Web.Models.ProviderCodes.ProviderCodeViewModel>
+
+@{ 
+    ViewData["Title"] = "Partners' Provider Codes";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <p class="lead">
+            Click on a code to update it or add a new one.
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @if (Model.Any())
+        {
+            foreach(var providerCode in Model)
+            {
+                <p>
+                    <a asp-controller="ProviderCodes" asp-action="Update" asp-route-id="@providerCode.Id">
+                        @providerCode.Code (@providerCode.StartDate.ToShortDateString() - @providerCode.EndDate.ToShortDateString())
+                    </a>
+                </p>
+            }
+        }
+        else
+        {
+            <p>No provider codes exist.</p>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p class="mt-4">
+            <a asp-controller="ProviderCodes" asp-action="Add" class="btn btn-sm btn-success">
+                <span class="oi oi-plus"></span>
+                Add Provider Code
+            </a>
+        </p>
+    </div>
+</div>

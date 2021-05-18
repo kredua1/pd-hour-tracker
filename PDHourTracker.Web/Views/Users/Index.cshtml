@@ -1,0 +1,92 @@
+﻿@model IEnumerable<PDHourTracker.Web.Models.Users.UserViewModel>
+
+@{ 
+    ViewData["Title"] = "Users";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <h2>Add/Remove Roles</h2>
+        <ul>
+            <li><i><b>Manager Role</b></i>: this role is required to access the site.</li>
+            <li><i><b>Admin Role</b></i>: this role is required to update users' roles. The Admin role can access the whole site.</li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div id="alertContainer"></div>
+        </div>
+        <table class="table table-sm table-striped">
+            <caption class="text-center">List of users and roles</caption>
+            <thead>
+                <tr class="table-dark brand-color">
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>
+                        Manager Role
+                    </th>
+                    <th>
+                        Admin Role
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var user in Model)
+                {
+                    // Variables determine if radio button is checked
+                    var adminYes = user.HasAdminRole ? "checked" : "";
+                    var adminNo = !user.HasAdminRole ? "checked" : "";
+                    var managerYes = user.HasManagerRole ? "checked" : "";
+                    var managerNo = !user.HasManagerRole ? "checked" : "";
+
+                    <tr>
+                        <td>@user.FullName</td>
+                        <td>@user.Email</td>
+                        @*<td>@Html.Raw(user.HasManagerRole ? "Yes" : "No")</td>*@
+                        <td>
+                            <div class="switch-field">
+                                <input type="radio" class="role" name="manager_role_@user.Id" id="manager_yes_@user.Id"
+                                       value="true" @managerYes data-id="@user.Id" data-role-name="manager" />
+                                <label for="manager_yes_@user.Id">
+                                    <span class="sr-only">Add Manager Role to @user.FullName</span> Yes
+                                </label>
+                                <input type="radio" class="role" name="manager_role_@user.Id" id="manager_no_@user.Id"
+                                       value="false" @managerNo data-id="@user.Id" data-role-name="manager" />
+                                <label for="manager_no_@user.Id"><span class="sr-only">
+                                    Remove Manager Role from @user.FullName</span> No
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="switch-field">
+                                <input type="radio" class="role" name="admin_role_@user.Id" id="admin_yes_@user.Id"
+                                       value="true" @adminYes data-id="@user.Id" data-role-name="admin" />
+                                <label for="admin_yes_@user.Id">
+                                    <span class="sr-only">Add Admin Role to @user.FullName</span> Yes
+                                </label>
+                                <input type="radio" class="role" name="admin_role_@user.Id" id="admin_no_@user.Id"
+                                       value="false" @adminNo data-id="@user.Id" data-role-name="admin" />
+                                <label for="admin_no_@user.Id">
+                                    <span class="sr-only">Remove Admin Role from @user.FullName</span> No
+                                </label>
+                            </div>
+                         </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{ 
+<script src="~/js/user-roles.js"></script>
+
+    <script>
+        $(function () {
+            // Enable tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}

@@ -1,0 +1,137 @@
+﻿@model PDHourTracker.Web.Models.Workshops.WorkshopViewModel
+
+@{ 
+    ViewData["Title"] = "Workshop Info";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav">
+            <li class="nav-item">
+                <a asp-controller="SignOutSheet" asp-action="Index" asp-route-id="@Model.Id"
+                   class="nav-link brand-color">
+                    Add attendees to workshop (Sign-Out Sheet)
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-controller="SignOutSheet" asp-action="Upload" asp-route-id="@Model.Id"
+                   class="nav-link brand-color">
+                    Upload Scanned Sign-Out Sheet
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        
+        <p class="text-lg-center text-big">@Model.WorkshopName</p>
+        <p>
+            @Model.Description
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <table class="table table-sm table-responsive-sm">
+            <thead>
+                <tr>
+                    <th class="text-right">Title</th>
+                    <th>Info</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right"><b>Date:</b></td>
+                    <td>@Model.TrainingDate.ToShortDateString()</td>
+                </tr>
+                <tr>
+                    <td class="text-right"><b>Hours:</b></td>
+                    <td>@Model.PDHours</td>
+                </tr>
+                <tr>
+                    <td class="text-right"><b>Contact:</b></td>
+                    <td>@Model.Employee.FullName</td>
+                </tr>
+                <tr>
+                    <td class="text-right"><b>Project:</b></td>
+                    <td>@Model.Project.ProjectName</td>
+                </tr>
+                <tr>
+                    <td class="text-right"><b>ID:</b></td>
+                    <td>@Model.SessionIdentifier-@Model.ProviderCode.Code</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+@* Scanned Sign-Out Sheet uploads *@
+<div class="row">
+    <div class="col-md-4">
+        @if (Model.SignOutSheets.Any())
+        {
+            var signOutSheetCount = 1;
+
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr class="table-warning">
+                        <th>Scanned Sign-Out Sheet(s)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var signOutSheetId in Model.SignOutSheets)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="SignOutSheet" asp-action="Download"
+                                   asp-route-id="@signOutSheetId">
+                                    Download Sign-Out Sheet @signOutSheetCount
+                                </a>
+                            </td>
+                        </tr>
+                        signOutSheetCount++;
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p class="">
+            <a asp-controller="SignOutSheet" asp-action="Upload" asp-route-id="@Model.Id"
+               class="btn btn-sm btn-success">
+                <span class="oi oi-plus"></span>
+                Upload Scanned Sign-Out Sheet
+            </a>
+        </p>
+        <p>
+            <a asp-controller="SignOutSheet" asp-action="Index" asp-route-id="@Model.Id">
+                Add attendees to workshop (Sign-Out Sheet)
+            </a>
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <p>
+            <a asp-controller="Workshops" asp-action="PDHoursExcel" asp-route-id="@Model.Id">
+                Download Attendee PD Hours to Excel
+            </a>
+        </p>
+        <partial name="~/Views/AttendeeHours/_AttendeeHoursTable.cshtml" model="@Model.WorkshopAttendeeHours" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p class="mt-5">
+            <a asp-controller="Workshops" asp-action="Index"
+                asp-route-p="@ViewData["PageNumber"]" asp-route-ps="@ViewData["PageSize"]">
+                Back to workshops
+            </a>
+        </p>
+    </div>
+</div>

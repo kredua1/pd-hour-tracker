@@ -1,0 +1,79 @@
+﻿@model PDHourTracker.Web.Models.Agencies.AgencyListModel
+
+@{ 
+    ViewData["Title"] = "Agencies";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <p class="lead">
+            Add or update agencies.
+        </p>
+        @*<div class="card mb-4">
+            <div class="card-header bg-success text-white text-center">
+                <h2>@ViewData["Title"]</h2>
+            </div>
+            <div class="card-body">
+                <p>
+                    View or add agencies.
+                </p>
+            </div>
+        </div>*@
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @if (Model.Agencies.Any())
+        {
+            <table class="table table-sm table-striped">
+                <caption class="text-center">List of agencies</caption>
+                <thead>
+                    <tr class="table-success">
+                        <th>Agency</th>
+                        <th>Attendees</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var agency in Model.Agencies)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="Agencies" asp-action="Update" asp-route-id="@agency.Id"
+                                   asp-route-p="@ViewData["PageNumber"]" asp-route-ps="@ViewData["PageSize"]">
+                                    @agency.AgencyName
+                                </a>
+                            </td>
+                            <td>
+                                <a asp-controller="Attendees" asp-action="ByAgency" asp-route-id="@agency.Id" class="text-danger"
+                                   asp-route-p="@ViewData["PageNumber"]" asp-route-ps="@ViewData["PageSize"]">
+                                    View Attendees
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <partial name="~/Views/Shared/_TablePagingFooter.cshtml" model="@Model.Pager" />
+                    </tr>
+                </tfoot>
+            </table>
+        }
+        else
+        {
+            <p>No agencies exist.</p>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p class="mt-4">
+            <a asp-controller="Agencies" asp-action="Add" class="btn btn-success"
+                asp-route-p="@ViewData["PageNumber"]" asp-route-ps="@ViewData["PageSize"]">
+                <span class="oi oi-plus"></span>
+                Add agency
+            </a>
+        </p>
+    </div>
+</div>

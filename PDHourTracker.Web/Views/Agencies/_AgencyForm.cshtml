@@ -1,0 +1,21 @@
+﻿@model PDHourTracker.Web.Models.Agencies.AgencyViewModel
+
+<form asp-controller="Agencies" asp-action="@ViewData["Action"]" method="post" role="form">
+    <input type="hidden" asp-for="Id" />
+
+    @* Store paging info *@
+    <input type="hidden" asp-for="PageNum" />
+    <input type="hidden" asp-for="PageSize" />
+
+    <div class="form-group">
+        <label asp-for="AgencyName">Agency Name</label>
+        <input type="text" class="form-control" asp-for="AgencyName" />
+        <span asp-validation-for="AgencyName"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-sm btn-primary">
+            <span class="oi oi-save"></span>
+            Save
+        </button>
+    </div>
+</form>

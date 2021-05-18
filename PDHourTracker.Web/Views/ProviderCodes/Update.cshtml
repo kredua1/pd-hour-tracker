@@ -1,0 +1,10 @@
+﻿@model PDHourTracker.Web.Models.ProviderCodes.ProviderCodeViewModel
+
+@{
+    ViewData["Title"] = "Update Provider Code";
+
+    // Action for form
+    ViewData["Action"] = "Update";
+}
+
+<partial name="_AddOrUpdate" model="@Model" view-data="@ViewData" />

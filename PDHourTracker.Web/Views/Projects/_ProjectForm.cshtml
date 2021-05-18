@@ -1,0 +1,18 @@
+﻿@model PDHourTracker.Web.Models.Projects.ProjectViewModel
+
+<form asp-controller="Projects" asp-action="@ViewData["Action"]" method="post" role="form">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="ProjectName">Project Name</label>
+        <input type="text" class="form-control" asp-for="ProjectName" />
+        <span asp-validation-for="ProjectName"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description">Project Description</label>
+        <textarea asp-for="Description" class="form-control" rows="5" cols="60"></textarea>
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-sm btn-primary" value="Save" />
+    </div>
+</form>

@@ -1,0 +1,20 @@
+﻿@model PDHourTracker.Web.Models.Errors.ErrorModel
+
+@{ 
+    ViewData["Title"] = "Error";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>@ViewData["Title"]</h1>
+        <p>
+            Error: @Model.ErrorMessage
+        </p>
+        <p>
+            Path: @Model.RouteOfException
+        </p>
+        <p>
+            Exception: @Model.ExceptionError
+        </p>
+    </div>
+</div>

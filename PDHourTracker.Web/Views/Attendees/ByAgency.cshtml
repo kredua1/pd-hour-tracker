@@ -1,0 +1,46 @@
+﻿@model PDHourTracker.Web.Models.Agencies.AgencyViewModel
+
+@{ 
+    ViewData["Title"] = "Attendees by Agency";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <p class="text-lg-center text-big">
+            <b>@Model.AgencyName</b>
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @if (Model.Attendees.Any())
+        {
+            <ul class="list-unstyled">
+                @foreach(var attendee in Model.Attendees)
+                {
+                    <li>@attendee.FullName</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>This agency does not have any attendees yet.</p>
+            <p>
+                <a asp-controller="Attendees" asp-action="Add" class="btn btn-sm btn-success">
+                    Add Attendee
+                </a>
+            </p>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p class="mt-5">
+            <a asp-controller="Agencies" asp-action="Index"
+                asp-route-p="@ViewData["PageNumber"]" asp-route-ps="@ViewData["PageSize"]">
+                Back to Agencies
+            </a>
+        </p>
+    </div>
+</div>

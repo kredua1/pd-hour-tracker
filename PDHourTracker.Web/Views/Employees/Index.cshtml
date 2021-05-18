@@ -1,0 +1,62 @@
+﻿@model IEnumerable<PDHourTracker.Web.Models.Employees.EmployeeViewModel>
+
+@{ 
+    ViewData["Title"] = "Employees";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <p class="lead">
+            List of Partners employees. These employess will be available to assign as the contact for a workshop.<br />
+            Click on an employee to update his/her name.
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @if (Model.Any())
+        {
+            <table class="table table-sm table-responsive table-striped">
+                <caption class="text-center">Partners Employees</caption>
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Workshop</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var employee in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="Employees" asp-action="Update" asp-route-id="@employee.Id">
+                                    @employee.FullName
+                                </a>
+                            </td>
+                            <td>
+                                <a asp-controller="Workshops" asp-action="ByEmployee" asp-route-id="@employee.Id">
+                                    @employee.FirstName's Workshops
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No employees exist. Please add some.</p>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p class="mt-4">
+            <a asp-controller="Employees" asp-action="Add" class="btn btn-sm btn-success">
+                <span class="oi oi-plus"></span>
+                Add employee
+            </a>
+        </p>
+    </div>
+</div>

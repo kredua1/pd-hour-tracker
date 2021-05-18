@@ -1,0 +1,38 @@
+﻿@model PDHourTracker.Web.Models.Projects.ProjectViewModel
+
+@{ 
+    ViewData["Title"] = "Workshops by Project";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <h2>@Model.ProjectName</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @if (Model.Workshops.Any())
+        {
+            // Table of workshps with dates and links?
+            foreach(var workshop in Model.Workshops)
+            {
+                <p>@workshop.WorkshopName</p>
+            }
+        }
+                <p class="mt-4">
+                    <a asp-controller="Workshops" asp-action="Add" asp-route-pid="@Model.Id"
+                       class="btn btn-sm btn-success">
+                        <span class="oi oi-plus"></span>
+                        Add Workshop
+                    </a>
+                </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p class="mt-4">
+            <a asp-controller="Projects" asp-action="Index">Back to Projects</a>
+        </p>
+    </div>
+</div>

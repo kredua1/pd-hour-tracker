@@ -1,0 +1,192 @@
+﻿@{
+    ViewData["Title"] = "Professional Development Hour Tracker";
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h1 class="brand-color">@ViewData["Title"]</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-5 mt-5">
+            <div class="card-header text-center bg-primary">
+                <h2>
+                    <a asp-controller="Workshops" asp-action="Index" class="text-white">Workshops</a>
+                </h2>
+            </div>
+            <div class="card-body">
+                <p>
+                    View or add workshops. You can add attendees' professional development hours to workshops.
+                </p>
+                <p class="text-center">
+                    <a asp-controller="Workshops" asp-action="Index" class="btn btn-sm btn-primary">View Workshops</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-5 mt-5">
+            <div class="card-header text-center bg-warning">
+                <h2>
+                    <a asp-controller="Attendees" asp-action="Index" class="text-on-bg-warning">Attendees</a>
+                </h2>
+            </div>
+            <div class="card-body">
+                <p>
+                    View or add attendees. You will need to enter an attendee before you can add their
+                    hours to a workshop.
+                </p>
+                <p class="text-center">
+                    <a asp-controller="Attendees" asp-action="Index" class="btn btn-sm btn-warning text-on-bg-warning">View Attendees</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-5 mt-5">
+            <div class="card-header text-center bg-success">
+                <h2>
+                    <a asp-controller="Agencies" asp-action="Index" class="text-white">Agencies</a>
+                </h2>
+            </div>
+            <div class="card-body">
+                <p>
+                    View or add agencies. You will need to enter an attendee's agency before you can enter
+                    an attendee.
+                </p>
+                <p class="text-center">
+                    <a asp-controller="Agencies" asp-action="Index" class="btn btn-sm btn-success">
+                        View Agencies
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="row">
+    <div class="col-md-4">
+        <h3>
+            <a asp-controller="Workshops" asp-action="Index">Workshops</a>
+        </h3>
+        <p>
+            View or add workshops. You can add attendees' professional development hours to workshops.
+        </p>
+        <p>
+            <a asp-controller="Workshops" asp-action="Index">View Workshops</a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h3>
+            <a asp-controller="Attendees" asp-action="Index">Attendees</a>
+        </h3>
+        <p>
+            View or add attendees. You will need to enter an attendee before you can add their
+            hours to a workshop.
+        </p>
+        <p>
+            <a asp-controller="Attendees" asp-action="Index">View Attendees</a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h3>
+            <a asp-controller="Agencies" asp-action="Index">Agencies</a>
+        </h3>
+        <p>
+            View or add agencies. You will need to enter an attendee's agency before you can enter
+            an attendee.
+        </p>
+        <p>
+            <a asp-controller="Agencies" asp-action="Index">View Agencies</a>
+        </p>
+    </div>
+</div>*@
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-header text-center">
+                <h2>
+                    <a asp-controller="Employees" asp-action="Index">Employees</a>
+                </h2>
+            </div>
+            <div class="card-body">
+                <p>
+                    View or add employees. Employees are the contact for the workshops.
+                </p>
+                <p>
+                    <a asp-controller="Employees" asp-action="Index">View Employees</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-header text-center">
+                <h2>
+                    <a asp-controller="Projects" asp-action="Index">Projects</a>
+                </h2>
+            </div>
+            <div class="card-body">
+                <p>
+                    View or add projects. Each workshop belongs to a project.
+                </p>
+                <p>
+                    <a asp-controller="Projects" asp-action="Index">View Projects</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-header text-center">
+                <h2>
+                    <a asp-controller="ProviderCodes" asp-action="Index">Provider Codes</a>
+                </h2>
+            </div>
+            <div class="card-body">
+                <p>
+                    View or add provider codes. Each workshop must have a provider code.
+                </p>
+                <p>
+                    <a asp-controller="ProviderCodes" asp-action="Index">View Provider Codes</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="row">
+    <div class="col-md-4">
+        <h3>
+            <a asp-controller="Employees" asp-action="Index">Employees</a>
+        </h3>
+        <p>
+            View or add employees. Employees are the contact for the workshops.
+        </p>
+        <p>
+            <a asp-controller="Employees" asp-action="Index">View Employees</a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h3>
+            <a asp-controller="Projects" asp-action="Index">Projects</a>
+        </h3>
+        <p>
+            View or add projects. Each workshop belongs to a project.
+        </p>
+        <p>
+            <a asp-controller="Projects" asp-action="Index">View Projects</a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h3>
+            <a asp-controller="ProviderCodes" asp-action="Index">Provider Codes</a>
+        </h3>
+        <p>
+            View or add provider codes. Each workshop must have a provider code.
+        </p>
+        <p>
+            <a asp-controller="ProviderCodes" asp-action="Index">View Provider Codes</a>
+        </p>
+    </div>
+</div>*@

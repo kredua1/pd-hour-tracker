@@ -1,0 +1,20 @@
+﻿@model PDHourTracker.Web.Models.Employees.EmployeeViewModel
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+</div>
+<partial name="_EmployeeForm" model="@Model" view-data="@ViewData" />
+<div class="row">
+    <div class="col-md-12">
+        <p class="mt-4">
+            <a asp-controller="Employees" asp-action="Index">Cancel and go back to employees</a>
+        </p>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

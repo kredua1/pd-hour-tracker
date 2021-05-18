@@ -1,0 +1,30 @@
+@using Microsoft.AspNetCore.Identity
+@using PDHourTracker.Infrastructure.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav ml-auto">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @*if (User.IsInRole(UserRoles.Admin))
+        {
+            <li class="nav-item">
+                <a asp-controller="Users" asp-action="Index" class="nav-link text-white">Users</a>
+            </li>
+        }*@
+        <li class="nav-item">
+            <a href="#" class="nav-link text-white">@User.FindFirst("FullName").Value</a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home")">
+                <button type="submit" class="nav-link btn btn-link text-white">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-white" asp-controller="Account" asp-action="Login">Login</a>
+        </li>
+    }
+</ul>

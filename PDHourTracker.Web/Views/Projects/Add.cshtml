@@ -1,0 +1,10 @@
+﻿@model PDHourTracker.Web.Models.Projects.ProjectViewModel
+
+@{
+    ViewData["Title"] = "Add Project";
+
+    // Action for form
+    ViewData["Action"] = "Add";
+}
+
+<partial name="_AddOrUpdate" model="@Model" view-data="@ViewData" />

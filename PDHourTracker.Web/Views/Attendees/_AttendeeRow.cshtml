@@ -1,0 +1,26 @@
+﻿@model PDHourTracker.Web.Models.Attendees.AttendeeWithAgencyModel
+
+@*
+    Creates a row listing attendee name, agency name and job title.
+    View is intended to be used in a table.
+*@
+
+<tr>
+    <td>
+        <a asp-controller="Attendees" asp-action="Details" asp-route-id="@Model.Id"
+            asp-route-p="@ViewData["PageNumber"]" asp-route-ps="@ViewData["PageSize"]"
+            asp-route-sv="@ViewData["SearchValue"]">
+            @Model.FullName
+        </a>
+    </td>
+    <td>@Model.CertId</td>
+    <td>@Model.AgencyName</td>
+    <td>@Model.JobTitle</td>
+    <td>
+        <a asp-controller="Attendees" asp-action="Update" asp-route-id="@Model.Id"
+            asp-route-p="@ViewData["PageNumber"]" asp-route-ps="@ViewData["PageSize"]"
+            asp-route-sv="@ViewData["SearchValue"]">
+            Update
+        </a>
+    </td>
+</tr>

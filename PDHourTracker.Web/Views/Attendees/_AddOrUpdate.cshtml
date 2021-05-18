@@ -1,0 +1,19 @@
+﻿@model PDHourTracker.Web.Models.Attendees.AttendeeEditModel
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+    </div>
+</div>
+<partial name="_AttendeeForm" model="Model" view-data="ViewData" />
+<div class="row">
+    <div class="col-md-12">
+        <p class="mt-4">
+            <a asp-controller="Attendees" asp-action="Index"
+                asp-route-p="@ViewData["PageNumber"]" asp-route-ps="@ViewData["PageSize"]">
+                Cancel and go back to attendees
+            </a>
+        </p>
+    </div>
+</div>
+

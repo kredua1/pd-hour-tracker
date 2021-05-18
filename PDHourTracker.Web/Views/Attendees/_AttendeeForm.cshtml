@@ -1,0 +1,98 @@
+﻿@model PDHourTracker.Web.Models.Attendees.AttendeeEditModel
+
+<form asp-controller="Attendees" asp-action="@ViewData["Action"]" method="post" role="form"
+    asp-route-ra="@ViewData["ReturnAction"]">
+    @*<div asp-validation-summary="All"></div>*@
+    <input type="hidden" asp-for="Id" />
+
+    @* Saving paging info *@
+    <input type="hidden" asp-for="PageNum" />
+    <input type="hidden" asp-for="PageSize" />
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-6">
+                <label asp-for="AgencyId">Agency</label>
+                @*<select asp-for="AgencyId" class="form-control"
+        asp-items="@{ new SelectList(Model.Agencies, "Id", "AgencyName")}">*@
+                <select asp-for="AgencyId" class="form-control"
+                        asp-items='new SelectList(Model.Agencies, "Id", "AgencyName")'>
+                    <option value="0">(Select Agency)</option>
+                </select>
+                <span asp-validation-for="AgencyId"></span>
+            </div>
+            <div class="col-md-6">
+                <p>
+                    <a asp-controller="Agencies" asp-action="Add">Add Agency</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="FirstName">First name</label>
+                <input type="text" class="form-control" asp-for="FirstName" maxlength="100" />
+                <span asp-validation-for="FirstName"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="MiddleName">Middle name</label>
+                <input type="text" class="form-control" asp-for="MiddleName" maxlength="100" />
+                <span asp-validation-for="MiddleName"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="LastName">Last name</label>
+                <input type="text" class="form-control" asp-for="LastName" maxlength="100" />
+                <span asp-validation-for="LastName"></span>
+            </div>
+        </div>
+    </div>
+    @*<div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="FirstName">First name</label>
+                <input type="text" class="form-control" asp-for="FirstName" maxlength="100" />
+                <span asp-validation-for="FirstName"></span>
+            </div>
+            <div class="col-md-3">
+                <label asp-for="MiddleName">Middle name</label>
+                <input type="text" class="form-control" asp-for="MiddleName" maxlength="100" />
+                <span asp-validation-for="MiddleName"></span>
+            </div>
+            <div class="col-md-3">
+                <label asp-for="LastName">Last name</label>
+                <input type="text" class="form-control" asp-for="LastName" maxlength="100" />
+                <span asp-validation-for="LastName"></span>
+            </div>
+        </div>
+    </div>*@
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-6">
+                <label asp-for="JobTitle">Job title</label>
+                <input type="text" class="form-control" asp-for="JobTitle" />
+                <span asp-validation-for="JobTitle"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="CertId">Identifier</label>
+                <input type="text" class="form-control" asp-for="CertId" maxlength="20" />
+                <span asp-validation-for="CertId"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-sm btn-primary" value="Save" />
+    </div>
+</form>

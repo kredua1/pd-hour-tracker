@@ -1,0 +1,10 @@
+﻿@model PDHourTracker.Web.Models.Agencies.AgencyViewModel
+
+@{
+    ViewData["Title"] = "Add Agency";
+
+    // Add form action Add  to add new agency
+    ViewData["Action"] = "Add";
+}
+
+<partial name="_AddOrUpdate" model="@Model" view-data="@ViewData" />

@@ -1,0 +1,240 @@
+﻿@model PDHourTracker.Web.Models.Workshops.WorkshopViewModel
+
+@{
+    ViewData["Title"] = "Sign-Out Sheet";
+
+    ViewData["WorkshopId"] = Model.Id;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <h2>
+            <a asp-controller="Workshops" asp-action="Details" asp-route-id="@Model.Id">
+                @Model.WorkshopName
+            </a>
+        </h2>
+        <p>@Model.TrainingDate.ToShortDateString()</p>
+    </div>
+</div>
+<div id="attendeeHourFormContainer">
+    <div class="row">
+        <div class="col-md-5">
+            <ol>
+                <li>Start typing attendee's name and select from list</li>
+                <li>Enter number of professional development hours</li>
+                <li>Optionally, enter comments</li>
+                <li>Click Save</li>
+            </ol>
+        </div>
+        <div class="col-md-7">
+            <div id="attendeeHourAlert"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            @* Form to add attendees hours to workshop *@
+            <form id="attendeeHourForm" action="/" method="post" role="form" autocomplete="off">
+                <input type="hidden" id="workshopId" value="@Model.Id" />
+                <input type="hidden" id="attendeeId" />
+                @*<div style="display: none;">
+                    <input type="text" id="PreventChromeAutocomplete"
+                           name="PreventChromeAutocomplete" autocomplete="address-level4" />
+                </div>*@
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="attendeeName">Attendee Name</label>
+                            <input type="text" id="attendeeName" name="attendeeName" class="form-control" autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+                <p>ID: <span id="certId"></span></p>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="PDHours">PD Hours</label>
+                            <input type="number" id="PDHours" name="PDHours" class="form-control" data-val="true"
+                                   data-val-number="PD Hours must be a number" data-val-required="PD Hours required" />
+                            <span class="field-validation-valid" data-valmsg-for="PDHours" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="comments">Comments (optional)</label>
+                            <textarea id="comments" name="comments" class="form-control" rows="3" maxlength="500"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" id="attendeeHourSubmit" class="btn btn-sm btn-primary" value="Save" />
+                </div>
+            </form>
+            <p class="mt-5">
+                <a href="/" id="addAttendeeLink">Add Attendee</a>
+            </p>
+        </div>
+        <div class="col-md-8">
+            @* List of attendees who attended workshop. Listed on sign-out sheet. *@
+            
+            <p>
+                Workshop Attendees -
+                <a asp-controller="Workshops" asp-action="PDHoursExcel" asp-route-id="@Model.Id">
+                    Download to Excel
+                </a>
+            </p>
+            <div id="attendeeContainer">
+                <partial name="~/Views/AttendeeHours/_AttendeeHoursTable.cshtml" model="@Model.WorkshopAttendeeHours" />
+            </div>
+        </div>
+    </div>
+</div>
+@* Add Attendee Form *@
+<div id="attendeeFormContainer" style="display: none;">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="attendeeAlert">
+                <p></p>
+            </div>
+            <h3>Add new attendee</h3>
+            <form id="attendeeForm" action="/" method="post" role="form">
+                <input type="hidden" id="attendeeAgencyId" />
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="firstName">First Name</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName"
+                                   data-val="true" data-val-length="100 characters max"
+                                   data-val-length-max="100" data-val-required="First name required"
+                                   maxlength="100"/>
+                            <span data-valmsg-for="firstName" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="middleName">Middle Name</label>
+                            <input type="text" class="form-control" id="middleName" name="middleName"
+                                    data-val="true" data-val-length="100 characters max"
+                                    data-val-length-max="100"
+                                    maxlength="100" />
+                            <span data-valmsg-for="middleName" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName"
+                                    data-val="true" data-val-length="100 characters max"
+                                    data-val-length-max="100" data-val-required="Last name required"
+                                    maxlength="100" />
+                            <span data-valmsg-for="lastName" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="attendeeAgency">Agency</label>
+                    <input type="text" class="form-control" id="attendeeAgency" name="attendeeAgency" />
+                    <span></span>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="jobTitle">Job Title</label>
+                            <input type="text" class="form-control" id="jobTitle" name="jobTitle"
+                                   data-val="true" data-val-length="100 characters max"
+                                   data-val-length-max="100"
+                                   maxlength="100" />
+                            <span data-valmsg-for="jobTitle" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="certId">Identifier</label>
+                            <input type="text" class="form-control" id="certId" name="certId" 
+                                   data-val="true" data-val-length="20 characters max"
+                                   data-val-length-max="20" maxlength="20" />
+                            <span data-valmsg-for="certId" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <input type="submit" id="attendeeSubmit" class="btn btn-sm btn-primary" value="Save" />
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" id="attendeeCancel" class="btn btn-sm btn-light">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <p class="mt-5">
+                <a href="#" id="addAgencyLink">Add Agency</a>
+            </p>
+        </div>
+    </div>
+</div>
+@* Agency Form *@
+<div id="agencyFormContainer" style="display: none;">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="agencyAlert"></div>
+            <h3>Add Agency</h3>
+            <form action="/" id="agencyForm" method="post" role="form">
+                <div class="form-group">
+                    <label for="agency">Agency Name</label>
+                    <input type="text" class="form-control" id="agency" name="agency"
+                           data-val="true" data-val-length="250 characters max"
+                           data-val-length-max="250" maxlength="250"
+                           data-val-required="Agency name required" />
+                    <span data-valmsg-for="agency" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <input type="submit" id="agencySubmit" class="btn btn-sm btn-primary" value="Save" />
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" id="agencyCancel" class="btn btn-sm btn-light">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <p class="mt-5">
+            <a asp-controller="Workshops" asp-action="Index"
+                asp-route-p="@ViewData["PageNumber"]" asp-route-ps="@ViewData["PageSize"]">
+                Back to Workshops
+            </a>
+        </p>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-ui-1.12.1/jquery-ui.js"></script>
+    <script src="~/js/attendeehour.js"></script>
+    <script src="~/lib/jquery-disable-autofill/jquery.disableAutoFill.min.js"></script>
+    <script>
+        $(function () {
+            // Disable autofill using disableAutoFill plugin
+            // https://github.com/terrylinooo/jquery.disableAutoFill
+            $('#attendeeHourForm').disableAutoFill();
+            $('#attendeeForm').disableAutoFill();
+        });
+    </script>
+}

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<PDHourTracker.Web.Models.Projects.ProjectViewModel>
+
+@{ 
+    ViewData["Title"] = "Projects";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <p class="lead">Click on a project to update it.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @if (Model.Any())
+        {
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Workshops</th>
+                        <th>Add Workshop</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var project in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="Projects" asp-action="Update" asp-route-id="@project.Id">
+                                    @project.ProjectName
+                                </a>
+                            </td>
+                            <td>
+                                <a asp-controller="Workshops" asp-action="ByProject" asp-route-id="@project.Id">
+                                    View Workshops
+                                </a>
+                            </td>
+                            <td>
+                                <a asp-controller="Workshops" asp-action="Add" asp-route-pid="@project.Id"
+                                    class="text-success">
+                                    Add Workshop
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No projects found.</p>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p class="mt-4">
+            <a asp-controller="Projects" asp-action="Add" class="btn btn-sm btn-success">
+                <span class="oi oi-plus"></span>
+                Add Project
+            </a>
+        </p>
+    </div>
+</div>

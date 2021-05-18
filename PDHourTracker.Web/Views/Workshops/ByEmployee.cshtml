@@ -1,0 +1,35 @@
+﻿@model PDHourTracker.Web.Models.Employees.EmployeeViewModel
+
+@{ 
+    ViewData["Title"] = "Workshops by Employee";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>@ViewData["Title"]</h2>
+        <h3>@Model.FullName</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @if (Model.Workshops.Any())
+        {
+            foreach(var workshop in Model.Workshops)
+            {
+                <p>
+                    <a asp-controller="Workshops" asp-action="Details"
+                       asp-route-id="@workshop.Id">
+                        @workshop.WorkshopName
+                    </a>
+                </p>
+            }
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            <a asp-controller="Employees" asp-action="Index">Back to Employees</a>
+        </p>
+    </div>
+</div>

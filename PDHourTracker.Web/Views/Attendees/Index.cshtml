@@ -1,0 +1,101 @@
+﻿@model PDHourTracker.Web.Models.Attendees.AttendeeListModel
+
+@{
+    ViewData["Title"] = "Attendees";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <p class="lead">
+            Click on an attendee to see all of his/her professional development hours and workshops.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @if (Model.Attendees.Any())
+        {
+            @* Show search value with link to clear if one is given. *@
+            if (!string.IsNullOrEmpty((string)ViewData["SearchValue"]))
+            {
+                <div class="alert alert-warning">
+                    <p>
+                        You searched for: <b>@ViewData["SearchValue"]</b>
+                        <span class="ml-5">
+                            <a asp-controller="Attendees" asp-action="Index">
+                                <span class="oi oi-x"></span>
+                                Clear Search
+                            </a>
+                        </span>
+                    </p>
+                </div>
+            }
+            <form id="attendeeSearch" asp-controller="Attendees" asp-action="Index" method="post" role="form">
+                <div class="input-group mb-3">
+                    <label for="searchValue" class="sr-only">Enter attendee name or email to search</label>
+                    <input type="text" id="searchValue" name="searchValue" class="form-control" aria-label="Attendee name or email to search"
+                           aria-describedby="" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-primary" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+            <table class="table table-sm table-striped">
+                <caption class="text-center">List of attendees and agencies</caption>
+                <thead>
+                    <tr class="table-warning">
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>Agency</th>
+                        <th>Job Title</th>
+                        <th>Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var attendee in Model.Attendees)
+                    {
+                        <partial name="_AttendeeRow" model="@attendee" view-data="@ViewData" />
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <partial name="~/Views/Shared/_TablePagingFooter.cshtml" model="Model.Pager" />
+                    </tr>
+                </tfoot>
+            </table>
+        }
+        else
+        {
+            <p>No attendees exist.</p>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            <a asp-controller="Attendees" asp-action="Add" class="btn btn-sm btn-success"
+               asp-route-p="@Model.Pager.PageNum" asp-route-ps="@Model.Pager.PageSize">
+                <span class="oi oi-plus"></span>
+                Add attendee
+            </a>
+        </p>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#attendeeSearch').submit(filterAttendees);
+        });
+
+        function filterAttendees(e) {
+            e.preventDefault();
+
+            var sv = $('#searchValue').val();
+
+            window.location.href = '/attendees/index?p=1&ps=50&sv=' + sv;
+        }
+    </script>
+}

@@ -1,0 +1,15 @@
+﻿@model PDHourTracker.Web.Models.Attendees.AttendeeEditModel
+
+@{
+    ViewData["Title"] = "Update Attendee";
+
+    // Action for form
+    ViewData["Action"] = "Update";
+}
+
+<partial name="_AddOrUpdate" model="Model" view-data="ViewData" />
+
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

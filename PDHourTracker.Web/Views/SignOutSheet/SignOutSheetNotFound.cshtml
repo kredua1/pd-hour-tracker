@@ -1,0 +1,29 @@
+﻿@{ 
+    ViewData["Title"] = "Sign-Out Sheet Not Found";
+
+    // Add values for back link
+    //ViewData["Controller"] = "Workshops";
+    //ViewData["Action"] = "Index";
+    //ViewData["LinkName"] = "Back to Workshops";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>@ViewData["Title"]</h2>
+        <p>The sign-out sheet could not be found.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            <a asp-controller="Workshops" asp-action="Index">Back to workshops</a>
+        </p>
+    </div>
+</div>
+@*<partial name="~/Views/Shared/_BackLink.cshtml"
+         view-data="@ViewData" />*@
+@*<partial name="~/Views/Shared/_BackLink.cshtml" 
+    view-data="@{new ViewDataDictionary(ViewData) {
+                    { "Controller", "Workshops" },
+                    { "Action", "Index" },
+                    { "LinkName", "Back to Workshops" } }; }" />*@

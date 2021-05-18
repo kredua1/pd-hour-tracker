@@ -1,0 +1,28 @@
+﻿@model PDHourTracker.Web.Models.Workshops.WorkshopEditModel
+
+@{
+    ViewData["Title"] = "Update Workshop";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+</div>
+<partial name="_WorkshopForm" view-data="ViewData" />
+<div class="row">
+    <div class="col-md-12">
+        <p class="mt-4">
+            <a asp-controller="Workshops" asp-action="Index"
+                asp-route-p="@Model.PageNum" asp-route-ps="@Model.PageSize">
+                Cancel and go back to workshops
+            </a>
+        </p>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/workshop.js"></script>
+}

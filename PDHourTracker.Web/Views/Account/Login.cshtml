@@ -1,0 +1,56 @@
+﻿@*@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Http.Authentication*@
+@inject Microsoft.AspNetCore.Identity.SignInManager<PDHourTracker.Infrastructure.Identity.ApplicationUser> SignInManager
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <p>
+            Use one of the services below to login.<br />
+            If you don't have an account, you'll be asked to create one after you login.<br />
+            If you already have an account, you will have access to the site after you login.
+        </p>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @{
+            var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            if (loginProviders.Count == 0)
+            {
+                <p>No login providers available.</p>
+            }
+            else
+            {
+                <form asp-action="ExternalLogin" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+                    <div class="login-image">
+                        <p>
+                            <button type="submit" class="sign-in-button" name="provider" value="Google"
+                                    title="Login using your Google account">
+                                <img src="~/images/btn_google_signin_light_normal_web.png" alt="Sign in with Google" />
+                            </button>
+                        </p>
+                        <p>
+                            <button type="submit" class="sign-in-button" name="provider" value="Microsoft"
+                                    title="Login using your Microsoft account">
+                                <img src="~/images/ms-symbollockup_signin_light.png" alt="Sign in with Microsoft" />
+                            </button>
+                        </p>
+                        <p>
+                            <button type="submit" class="sign-in-button" name="provider" value="Twitter"
+                                    title="Login using your Twitter account">
+                                <img src="~/images/sign-in-with-twitter-gray.png" alt="Sign in with Twitter" />
+                            </button>
+                        </p>
+                    </div>
+                </form>
+            }
+        }
+    </div>
+</div>

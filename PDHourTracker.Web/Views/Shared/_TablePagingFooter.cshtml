@@ -1,0 +1,8 @@
+﻿@model PDHourTracker.Web.Models.TableFooterPagingModel
+
+<td colspan="@Model.PageLinkColSpan" class="pt-3">
+    <partial name="~/Views/Shared/_PagingLinks.cshtml" model="Model" />
+</td>
+<td colspan="@Model.ItemCountColspan" class="text-right pt-3">
+    <partial name="~/Views/Shared/_PagingCounts.cshtml" model="Model" />
+</td>
